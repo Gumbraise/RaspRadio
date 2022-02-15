@@ -3,13 +3,15 @@ PS3="RaspRadio>"
 absolutePath=$(realpath .)
 
 mainmenu() {
-  mainmenu=("Lauch RaspRadio" "View Readme" "Quit")
+  mainmenu=("Lauch RaspRadio" "Update" "View Readme" "Quit")
   select opt in "${mainmenu[@]}"; do
     if [ "$opt" = "Quit" ]; then
       echo "Quitting...Thank you for using RaspRadio!" && sleep 1 && clear
       exit 0
     elif [ "$opt" = "Lauch RaspRadio" ]; then
       raspradiomenu
+    elif [ "$opt" = "Update" ]; then
+      git pull
     elif [ "$opt" = "View Readme" ]; then
       showreadme
     else
