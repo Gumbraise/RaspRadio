@@ -44,15 +44,17 @@ raspradiomenu() {
   fi
 
   echo ""
-
   echo "Radio Name: $radioName"
   echo "Radio Description: $radioDescription"
   echo "Radio Audio path/link: $radioAudioPath"
   echo "Radio Frequency: $radioFrequency"
   echo "Radio PI-code: $radioPICode"
+  echo ""
+  echo "Are you ready to launch your radio ? "
+  read
 
   if [ "${radioAudioPath:0:4}" == "http" ]; then
-    sudo sox -t mp3 "$radioAudioPath" -t wav -  | pi_fm_rds -freq $radioFrequency -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription" -audio -
+    sudo sox -t mp3 "$radioAudioPath" -t wav - | pi_fm_rds -freq $radioFrequency -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription" -audio -
   else
     pi_fm_rds -freq "$radioFrequency" -audio "$radioAudioPath" -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription"
   fi
