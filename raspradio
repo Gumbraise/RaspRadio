@@ -27,7 +27,7 @@ mainmenu() {
     then
       showreadme
     else
-      echo "That's not a valid option! Hit Return to show main menu"
+      echo "That's not a valid option! Hit Return to show main menue"
     fi
   done
 }
