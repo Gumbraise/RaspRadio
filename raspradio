@@ -1,0 +1,87 @@
+#!/bin/bash
+PS3="RaspRadio>"
+absolutePath=$(realpath .)
+
+mainmenu() {
+  mainmenu=("Lauch RaspRadio" "View Readme" "Quit")
+  select opt in "${mainmenu[@]}"; do
+    if [ "$opt" = "Quit" ]; then
+      echo "Quitting...Thank you for using RaspRadio!" && sleep 1 && clear
+      exit 0
+    elif [ "$opt" = "Lauch RaspRadio" ]; then
+      raspradiomenu
+    elif [ "$opt" = "View Readme" ]; then
+      showreadme
+    else
+      echo "That's not a valid option! Hit Return to show main menu"
+    fi
+  done
+}
+
+raspradiomenu() {
+  echo "Radio Name (max. 8 chars):"
+  read radioName
+  : ${radioName:="RaspRadio"}
+  echo "Radio Description (max. 64 chars):"
+  read radioDescription
+  : ${radioDescription:="RaspRadio, the cheapest FM radio transmitter through your simple Raspberry."}
+  echo "Radio Audio path/link (wav/ogg):"
+  read radioAudio
+  : ${radioAudio:="RaspRadio, the cheapest FM radio transmitter through your simple Raspberry."}
+  echo "Radio Frequence (MHz):"
+  read radioFrequency
+  : ${radioFrequency:="101.5"}
+  echo "Radio PI-code (default: FFFF):"
+  read radioPICode
+  : ${radioPICode:="FFFF"}
+  echo "Radio PI-code (default: FFFF):"
+  read radioPICode
+  : ${radioPICode:="FFFF"}
+
+  if [ "${radioAudio:0:4}" == "http" ]; then
+    echo "radioAudio"
+    echo "${radioAudio:0:4}"
+    radioAudioPath=$radioAudio
+  else
+    radioAudioPath="$absolutePath/audio/$radioAudio"
+  fi
+
+  echo ""
+  echo "Radio Name: $radioName"
+  echo "Radio Description: $radioDescription"
+  echo "Radio Audio path/link: $radioAudioPath"
+  echo "Radio Frequency: $radioFrequency"
+  echo "Radio PI-code: $radioPICode"
+
+  if [ "${radioAudioPath:0:4}" == "http" ]; then
+    sudo sox -t mp3 "radioAudioPath" -t wav -  | sudo pi_fm_rds -freq $radioFrequency -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription" -audio -
+  else
+    sudo pi_fm_rds -freq "$radioFrequency" -audio "$radioAudioPath" -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription"
+  fi
+}
+
+showreadme() {
+  curl -s https://raw.githubusercontent.com/Gumbraise/RaspRadio/master/README.md | more
+}
+
+clear && echo ""
+echo "                !                                 "
+echo "                |                                 "
+echo "                |    |~/                          "
+echo "                |   _|~            ____                   ____            ___     "
+echo "  .============.|  (_|   |~/      / __ \____ __________  / __ \____ _____/ (_)___ "
+echo ".-;____________;|.      _|~      / /_/ / __ \`/ ___/ __ \/ /_/ / __ \`/ __  / / __ \\"
+echo "| [_________I__] |     (_|      / _, _/ /_/ (__  ) /_/ / _, _/ /_/ / /_/ / / /_/ /"
+echo "|  \"\"\"\"\" (_) (_) |\"            /_/ |_|\__,_/____/ .___/_/ |_|\__,_/\__,_/_/\____/ "
+echo "| .=====..=====. |                             /_/                                "
+echo "| |:::::||:::::| |                                "
+echo "| '=====''=====' |                                "
+echo "'----------------'                                "
+echo ""
+echo "Welcome to RaspRadio!"
+echo "Please report all bugs, improvements and suggestions to https://github.com/Gumbraise/RaspRadio/issues"
+echo "This software is only for responsible, authorised use."
+echo "YOU are responsible for your own actions!"
+echo "Please review the readme at https://raw.githubusercontent.com/GinjaChris/RaspRadio/master/README.md before proceeding"
+echo ""
+mainmenu
