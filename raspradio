@@ -51,9 +51,9 @@ raspradiomenu() {
   echo "Radio PI-code: $radioPICode"
 
   if [ "${radioAudioPath:0:4}" == "http" ]; then
-    sudo sox -t mp3 "radioAudioPath" -t wav -  | sudo pi_fm_rds -freq $radioFrequency -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription" -audio -
+    sudo sox -t mp3 "radioAudioPath" -t wav -  | pi_fm_rds -freq $radioFrequency -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription" -audio -
   else
-    sudo pi_fm_rds -freq "$radioFrequency" -audio "$radioAudioPath" -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription"
+    pi_fm_rds -freq "$radioFrequency" -audio "$radioAudioPath" -pi "$radioPICode" -ps "$radioName" -rt "$radioDescription"
   fi
 }
 
