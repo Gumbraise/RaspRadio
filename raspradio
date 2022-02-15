@@ -16,7 +16,7 @@ mainmenu() {
         echo "$gitUpdate"
       else
         echo "$gitUpdate"
-
+        echo ""
         echo "RaspRadio has been updated. Press enter to restart the program"
         read
         sudo bash ./raspradio
@@ -27,7 +27,7 @@ mainmenu() {
     then
       showreadme
     else
-      echo "That's not a valid option! Hit Return to show main menue"
+      echo "That's not a valid option! Hit Return to show main menu"
     fi
   done
 }
