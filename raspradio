@@ -34,9 +34,6 @@ raspradiomenu() {
   echo "Radio PI-code (default: FFFF):"
   read radioPICode
   : ${radioPICode:="FFFF"}
-  echo "Radio PI-code (default: FFFF):"
-  read radioPICode
-  : ${radioPICode:="FFFF"}
 
   if [ "${radioAudio:0:4}" == "http" ]; then
     echo "radioAudio"
